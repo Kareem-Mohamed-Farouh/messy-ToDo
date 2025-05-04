@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kafo_o ToDo</title>
+
+    <!-- for font   Exo 2 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./css/all.min.css" />
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  </head>
+  <body>
+    <section class="py-5 text-white">
+      <div class="list mx-auto rounded-4 py-3">
+        <h1 class="text-center">To-do list</h1>
+        <div class="d-flex justify-content-center gap-3 my-3">
+          <input
+            id="taskInput"
+            type="text"
+            class="text-capitalize w-50 border-0 bg-secondary-subtle placeholder-wave rounded-3 p-2"
+            placeholder="add Task To Do.."
+          />
+          <button class="btn btn-dark px-3 rounded-3 py-2" onclick="addTask()">
+            Add Task
+          </button>
+        </div>
+        <ul
+          id="taskList"
+          class="taskList mx-auto text-center overflow-auto rounded-4"
+        >
+          <!-- <li
+            class="li-list d-flex justify-content-between align-items-center  mb-4 p-3 rounded-4 border-bottom border-2"
+          >
+            <p class="text-span text-capitalize fs-5 overflow-hidden">
+              hello kareeem 
+            </p>
+            <div class="d-flex gap-3 justify-content-center align-items-center">
+              <button class="btn btn-outline-success  text-white">
+                Toggle
+              </button>
+              <button
+                class="d-flex align-items-center gap-2 btn btn-outline-danger text-white "
+              >
+                <i class="fw-lighter fa-solid fa-trash-can"></i> Delete
+              </button>
+            </div>
+          </li> -->
+          <div>
+            <i
+              class="fa-solid fa-list-check text-secondary fs-1 my-3 mx-auto"
+            ></i>
+            <p class="text-capitalize fs-1 text-secondary">
+              no task to do it yet
+              <br />
+              <span class="fs-2"> add one in your list</span>
+              <br />
+              <span class="fs-3"> kaf&#169;_&#169; </span>
+            </p>
+          </div>
+        </ul>
+      </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>

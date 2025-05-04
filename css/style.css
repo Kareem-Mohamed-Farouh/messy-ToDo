@@ -1,0 +1,95 @@
+body {
+  font-family: "Exo 2", sans-serif;
+}
+section {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.184), rgba(0, 0, 0, 0.378)),
+    url(../images/4.webp);
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.list {
+  width: 50%;
+  min-height: 70vh;
+  background-color: rgba(1, 4, 12, 0.492);
+  box-shadow: 0rem 0rem 0.02rem 0.0125rem white inset;
+}
+
+.taskList {
+  background-color: rgba(1, 4, 12, 0.253);
+  padding: 20px;
+  width: 90%;
+  height: 400px;
+  margin-bottom: 20px;
+  box-shadow: 0rem 0rem 0.02rem 0.0125rem white inset;
+}
+.li-list {
+  background-color: rgba(1, 4, 12, 0.556);
+  position: relative;
+}
+
+.taskList::-webkit-scrollbar {
+  width: 10px;
+  scroll-behavior: smooth;
+}
+.taskList::-webkit-scrollbar-thumb {
+  background: rgba(244, 244, 251, 0.763);
+  border-radius: 30px;
+}
+.taskList::-webkit-scrollbar-track {
+  background: rgba(0, 0, 31, 0.205);
+}
+.text-span {
+  text-align: start;
+  text-overflow: ellipsis !important;
+  cursor: pointer;
+}
+.text-span::after {
+  content: "Mark Task as Complete task or not";
+  position: absolute;
+  left: 10%;
+  bottom: 0;
+  padding: 6px;
+  background-color: #ffffff52;
+  border-radius: 20px;
+  background: #02113795;
+  font-size: 0.9rem;
+  color: white;
+  opacity: 0;
+  transition: all 0.4;
+  cursor: default;
+}
+.text-span:hover::after {
+  opacity: 1;
+}
+
+@media only screen and (max-width: 900px) {
+  .list {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 300;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .list {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 300;
+  }
+}
+@media only screen and (min-width: 1300px) {
+  .list {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
