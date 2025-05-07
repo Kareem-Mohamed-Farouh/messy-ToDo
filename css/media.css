@@ -1,0 +1,24 @@
+@media only screen and (max-width: 900px) {
+  .list {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 300;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .list {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 300;
+  }
+}
+@media only screen and (min-width: 1300px) {
+  .list {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

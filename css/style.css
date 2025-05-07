@@ -8,7 +8,7 @@ section {
   background-size: cover;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -67,29 +67,4 @@ section {
 }
 .text-span:hover::after {
   opacity: 1;
-}
-
-@media only screen and (max-width: 900px) {
-  .list {
-    width: 95%;
-    margin-left: auto;
-    margin-right: auto;
-    font-weight: 300;
-  }
-}
-
-@media only screen and (min-width: 900px) {
-  .list {
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    font-weight: 300;
-  }
-}
-@media only screen and (min-width: 1300px) {
-  .list {
-    width: 60%;
-    margin-left: auto;
-    margin-right: auto;
-  }
 }

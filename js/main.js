@@ -1,23 +1,33 @@
-
 var textTaskValue = document.getElementById("taskInput");
+let comp = document.getElementById("comp");
+let progress = document.querySelector(".progress-bar");
+let alltasksList = document.getElementById("alltasks");
 var list = document.getElementById("taskList");
 let tasks = [];
+let tasksFinshd = 0;
+let tasksNotFinshd = 0;
+let allTasks = 0;
 
-if (localStorage.getItem('allTasksList')) {
-    tasks = JSON.parse(localStorage.getItem('allTasksList'))
+alltasksList.innerHTML = allTasks;
+comp.innerHTML = tasksFinshd;
+if (localStorage.getItem("allTasksList")) {
+    tasks = JSON.parse(localStorage.getItem("allTasksList"));
+
+    timesTaskIsCompleted();
+
     displayTasks();
 }
 
 function addTask() {
     if (textTaskValue.value !== " " && textTaskValue.value !== "") {
-        let task =
-        {
+        let task = {
             content: textTaskValue.value,
             completed: false,
         };
         tasks.push(task);
-        localStorage.setItem('allTasksList', JSON.stringify(tasks));
-        console.log(tasks);
+        localStorage.setItem("allTasksList", JSON.stringify(tasks));
+        addNewTask()
+        // console.log(tasks);
         displayTasks();
         clearInputTask();
     }
@@ -32,12 +42,18 @@ function displayTasks() {
     for (let i = 0; i < tasks.length; i++) {
         cartonaEltasks += `<li
     class="li-list d-flex justify-content-between align-items-center  mb-4 p-3 rounded-4 border-bottom border-2">
-    <p onclick="markDone(${i})" class="${tasks[i].completed ? 'text-decoration-line-through' : 'text-decoration-none'}  text-span  text-capitalize fs-5 overflow-hidden">
+    <p onclick="markDone(${i})" class="${tasks[i].completed
+                ? "text-decoration-line-through"
+                : "text-decoration-none"
+            }  text-span  text-capitalize fs-5 overflow-hidden">
     ${tasks[i].content}
     </p>
     <div class="d-flex gap-3  justify-content-center align-items-center">
         <span   class=" fs-4 ">
-            ${tasks[i].completed ? '<i class="fa-regular fa-circle-check" style="color: #63E6BE;"></i>' : '<i class="fa-regular fa-clock fa-spin-pulse" style="color: #74C0FC;"></i>'}
+            ${tasks[i].completed
+                ? '<i class="fa-regular fa-circle-check" style="color: #63E6BE;"></i>'
+                : '<i class="fa-regular fa-clock fa-spin-pulse" style="color: #74C0FC;"></i>'
+            }
         </span>
         <button onclick="deleteTask(${i})"
             class="d-flex align-items-center gap-2 btn btn-outline-danger text-white "
@@ -45,16 +61,28 @@ function displayTasks() {
             <i class="fw-lighter fa-solid fa-trash-can"></i> Delete
         </button>
     </div>
-</li>`
+</li>`;
     }
     list.innerHTML = cartonaEltasks;
 }
 
 function deleteTask(taskId) {
-    tasks.splice(taskId, 1);
-    localStorage.setItem('allTasksList', JSON.stringify(tasks));
-    if (localStorage.getItem('allTasksList') == '[]') {
-        list.innerHTML = `<div>
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            removeTask(taskId);
+            tasks.splice(taskId, 1);
+            localStorage.setItem("allTasksList", JSON.stringify(tasks));
+            if (localStorage.getItem("allTasksList") == "[]") {
+                list.innerHTML = `<div>
             <i
             class="fa-solid fa-list-check text-secondary fs-1 my-3 mx-auto"
             ></i>
@@ -65,26 +93,37 @@ function deleteTask(taskId) {
             <br>
             <span class="fs-3">  kaf&#169;_&#169; </span>
             </p>
-          </div>`
-        localStorage.removeItem('allTasksList')
-    } else {
-        displayTasks();
-    }
+          </div>`;
+                localStorage.removeItem("allTasksList");
+                allTasks = 0;
+
+
+            } else {
+                displayTasks();
+            }
+
+            Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success",
+            });
+        }
+    });
 }
 
 function markDone(id) {
     // check task if finishd or not to
     if (tasks[id].completed == false) {
         tasks[id].completed = true;
-        alertOneTaskDone()
-    }
-    else {
+        oneTaskCompleted();
+        alertOneTaskDone();
+    } else {
         tasks[id].completed = false;
-        alertOneTaskNotFinishd()
+        oneTaskNotCompleted();
+        alertOneTaskNotFinishd();
     }
-    localStorage.setItem('allTasksList', JSON.stringify(tasks));
 
-
+    localStorage.setItem("allTasksList", JSON.stringify(tasks));
     let flag = 0;
     for (const done of tasks) {
         if (done.completed == true) {
@@ -96,10 +135,10 @@ function markDone(id) {
         // alert("all task done succesfully");
         allTasksDone();
     }
-    displayTasks()
+    displayTasks();
 }
 
-// alerts of task
+// start  alerts of task
 function alertOneTaskDone() {
     Swal.fire({
         position: "top-end",
@@ -114,7 +153,6 @@ function alertOneTaskDone() {
         showConfirmButton: false,
         timer: 1500,
     });
-
 }
 
 function alertOneTaskNotFinishd() {
@@ -128,9 +166,8 @@ function alertOneTaskNotFinishd() {
         color: "#fff",
         background: "#ffffff52 url(../images/4.webp) ",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
     });
-
 }
 
 function allTasksDone() {
@@ -141,24 +178,61 @@ function allTasksDone() {
         color: "#fff",
         background: " url(../images/4.webp) ",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
     });
 }
+// end  alerts of task
 
 
 
+function computedPercent(allTasks, tasksFinshd) {
+    let percent = (tasksFinshd / allTasks) * 100;
+    console.log(percent);
+    progress.style.width = `${percent}%`;
 
 
+}
 
+function timesTaskIsCompleted() {
+    for (const ok of tasks) {
+        allTasks += 1;
+        alltasksList.innerHTML = allTasks;
+        if (ok.completed === true) {
+            tasksFinshd += 1;
+            comp.innerHTML = `${tasksFinshd}`;
+        }
+    }
+    computedPercent(allTasks, tasksFinshd);
 
+}
 
+function addNewTask() {
+    allTasks += 1;
+    alltasksList.innerHTML = allTasks;
+    computedPercent(allTasks, tasksFinshd);
+}
 
+function removeTask(taskId) {
+    allTasks -= 1;
+    alltasksList.innerHTML = allTasks;
 
+    if (tasks[taskId].completed == true) {
+        oneTaskNotCompleted()
+    }
+    computedPercent(allTasks, tasksFinshd)
+}
 
+function oneTaskCompleted() {
+    tasksFinshd += 1;
+    comp.innerHTML = `${tasksFinshd}`;
 
-
-
-
+    computedPercent(allTasks, tasksFinshd);
+}
+function oneTaskNotCompleted() {
+    tasksFinshd -= 1;
+    comp.innerHTML = `${tasksFinshd}`;
+    computedPercent(allTasks, tasksFinshd)
+}
 
 // var task = a.value;
 // if (task !== "" && task !== " ") {
@@ -172,9 +246,7 @@ function allTasksDone() {
 //     b();
 // }
 
-
 // var data = [];
-
 
 // function b() {
 //     var ul = document.getElementById("taskList");
@@ -220,11 +292,6 @@ function allTasksDone() {
 //     }
 // }, 10000);
 
-
-
-
-
-
 `<li
     class="li-list d-flex justify-content-between align-items-center  mb-4 p-3 rounded-4 border-bottom border-2"
 >
@@ -241,5 +308,4 @@ function allTasksDone() {
             <i class="fw-lighter fa-solid fa-trash-can"></i> Delete
         </button>
     </div>
-</li>`
-
+</li>`;
