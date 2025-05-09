@@ -78,7 +78,13 @@ function deleteTask(taskId) {
     }).then((result) => {
         if (result.isConfirmed) {
 
+            // to make progrres = 0 % when you have only task and its completed and you want to delete it 
+            if (allTasks == 1, tasksFinshd == 1) {
+                progress.style.width = `${0}%`;
+
+            }
             removeTask(taskId);
+
             tasks.splice(taskId, 1);
             localStorage.setItem("allTasksList", JSON.stringify(tasks));
             if (localStorage.getItem("allTasksList") == "[]") {
@@ -95,10 +101,12 @@ function deleteTask(taskId) {
             </p>
           </div>`;
                 localStorage.removeItem("allTasksList");
-                allTasks = 0;
+
+
 
 
             } else {
+
                 displayTasks();
             }
 
@@ -186,9 +194,14 @@ function allTasksDone() {
 
 
 function computedPercent(allTasks, tasksFinshd) {
+    if (allTasks == 1, tasksFinshd == 1) {
+        progress.style.width = `${0}%`;
+
+    }
     let percent = (tasksFinshd / allTasks) * 100;
     console.log(percent);
     progress.style.width = `${percent}%`;
+
 
 
 }
