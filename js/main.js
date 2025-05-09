@@ -7,9 +7,9 @@ let tasks = [];
 let tasksFinshd = 0;
 let tasksNotFinshd = 0;
 let allTasks = 0;
-
 alltasksList.innerHTML = allTasks;
 comp.innerHTML = tasksFinshd;
+
 if (localStorage.getItem("allTasksList")) {
     tasks = JSON.parse(localStorage.getItem("allTasksList"));
 
@@ -81,10 +81,11 @@ function deleteTask(taskId) {
             // to make progrres = 0 % when you have only task and its completed and you want to delete it 
             if (allTasks == 1, tasksFinshd == 1) {
                 progress.style.width = `${0}%`;
-
             }
+            // *****************************
+            // function progress
             removeTask(taskId);
-
+            // *************
             tasks.splice(taskId, 1);
             localStorage.setItem("allTasksList", JSON.stringify(tasks));
             if (localStorage.getItem("allTasksList") == "[]") {
@@ -101,15 +102,9 @@ function deleteTask(taskId) {
             </p>
           </div>`;
                 localStorage.removeItem("allTasksList");
-
-
-
-
             } else {
-
                 displayTasks();
             }
-
             Swal.fire({
                 title: "Deleted!",
                 text: "Your file has been deleted.",
@@ -192,7 +187,6 @@ function allTasksDone() {
 // end  alerts of task
 
 
-
 function computedPercent(allTasks, tasksFinshd) {
     if (allTasks == 1, tasksFinshd == 1) {
         progress.style.width = `${0}%`;
@@ -201,9 +195,6 @@ function computedPercent(allTasks, tasksFinshd) {
     let percent = (tasksFinshd / allTasks) * 100;
     console.log(percent);
     progress.style.width = `${percent}%`;
-
-
-
 }
 
 function timesTaskIsCompleted() {
@@ -241,11 +232,16 @@ function oneTaskCompleted() {
 
     computedPercent(allTasks, tasksFinshd);
 }
+
 function oneTaskNotCompleted() {
     tasksFinshd -= 1;
     comp.innerHTML = `${tasksFinshd}`;
     computedPercent(allTasks, tasksFinshd)
 }
+
+
+
+// old code
 
 // var task = a.value;
 // if (task !== "" && task !== " ") {
@@ -305,20 +301,20 @@ function oneTaskNotCompleted() {
 //     }
 // }, 10000);
 
-`<li
-    class="li-list d-flex justify-content-between align-items-center  mb-4 p-3 rounded-4 border-bottom border-2"
->
-    <p class="text-span text-capitalize fs-5 overflow-hidden">
-        hello kareeem
-    </p>
-    <div class="d-flex gap-3 justify-content-center align-items-center">
-        <button class="btn btn-outline-success  text-white">
-            Toggle
-        </button>
-        <button
-            class="d-flex align-items-center gap-2 btn btn-outline-danger text-white "
-        >
-            <i class="fw-lighter fa-solid fa-trash-can"></i> Delete
-        </button>
-    </div>
-</li>`;
+// `<li
+//     class="li-list d-flex justify-content-between align-items-center  mb-4 p-3 rounded-4 border-bottom border-2"
+// >
+//     <p class="text-span text-capitalize fs-5 overflow-hidden">
+//         hello kareeem
+//     </p>
+//     <div class="d-flex gap-3 justify-content-center align-items-center">
+//         <button class="btn btn-outline-success  text-white">
+//             Toggle
+//         </button>
+//         <button
+//             class="d-flex align-items-center gap-2 btn btn-outline-danger text-white "
+//         >
+//             <i class="fw-lighter fa-solid fa-trash-can"></i> Delete
+//         </button>
+//     </div>
+// </li>`;
