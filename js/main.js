@@ -5,28 +5,39 @@ let alltasksList = document.getElementById("alltasks");
 var list = document.getElementById("taskList");
 let tasks = [];
 let tasksFinshd = 0;
-let tasksNotFinshd = 0;
 let allTasks = 0;
-alltasksList.innerHTML = allTasks;
-comp.innerHTML = tasksFinshd;
+
+
+
+updateTaskCountDisplay();
+
+
+function updateTaskCountDisplay() {
+    alltasksList.innerHTML = allTasks;
+    comp.innerHTML = tasksFinshd;
+    computedPercent(allTasks, tasksFinshd);
+}
 
 if (localStorage.getItem("allTasksList")) {
     tasks = JSON.parse(localStorage.getItem("allTasksList"));
-
     timesTaskIsCompleted();
-
     displayTasks();
 }
 
+
+
+// Add new Task
 function addTask() {
-    if (textTaskValue.value !== " " && textTaskValue.value !== "") {
+    if (textTaskValue.value !== " " && (textTaskValue.value) !== "") {
         let task = {
             content: textTaskValue.value,
             completed: false,
         };
         tasks.push(task);
         localStorage.setItem("allTasksList", JSON.stringify(tasks));
-        addNewTask()
+        allTasks++;
+
+        updateTaskCountDisplay();
         // console.log(tasks);
         displayTasks();
         clearInputTask();
@@ -56,7 +67,7 @@ function displayTasks() {
             }
         </span>
         <button onclick="deleteTask(${i})"
-            class="d-flex align-items-center gap-2 btn btn-outline-danger text-white "
+            class="d-flex align-items-center gap-2 button text-white "
         >
             <i class="fw-lighter fa-solid fa-trash-can"></i> Delete
         </button>
@@ -65,7 +76,7 @@ function displayTasks() {
     }
     list.innerHTML = cartonaEltasks;
 }
-
+// delete tasks
 function deleteTask(taskId) {
     Swal.fire({
         title: "Are you sure?",
@@ -79,12 +90,17 @@ function deleteTask(taskId) {
         if (result.isConfirmed) {
 
             // to make progrres = 0 % when you have only task and its completed and you want to delete it 
-            if (allTasks == 1, tasksFinshd == 1) {
+            if (allTasks == 1 && tasksFinshd == 1) {
                 progress.style.width = `${0}%`;
             }
             // *****************************
             // function progress
-            removeTask(taskId);
+
+            allTasks--;
+            if (tasks[taskId].completed == true) {
+                tasksFinshd--;
+            }
+            updateTaskCountDisplay();
             // *************
             tasks.splice(taskId, 1);
             localStorage.setItem("allTasksList", JSON.stringify(tasks));
@@ -114,16 +130,20 @@ function deleteTask(taskId) {
     });
 }
 
+
 function markDone(id) {
     // check task if finishd or not to
     if (tasks[id].completed == false) {
         tasks[id].completed = true;
-        oneTaskCompleted();
-        alertOneTaskDone();
+        tasksFinshd++;
+        updateTaskCountDisplay();
+        alert('top-end', "success", "Your Task has been Done");
     } else {
         tasks[id].completed = false;
-        oneTaskNotCompleted();
-        alertOneTaskNotFinishd();
+        tasksFinshd--;
+
+        updateTaskCountDisplay()
+        alert('top-end', "info", 'Not Finished your Task yet !!');
     }
 
     localStorage.setItem("allTasksList", JSON.stringify(tasks));
@@ -136,59 +156,26 @@ function markDone(id) {
     }
     if (flag == tasks.length && tasks.length !== 1) {
         // alert("all task done succesfully");
-        allTasksDone();
+        alert('top', "success", "all Tasks have been Done");
     }
     displayTasks();
 }
 
-// start  alerts of task
-function alertOneTaskDone() {
+// more generic function
+
+function alert(position, type, message) {
     Swal.fire({
-        position: "top-end",
-        title: "Your Task has been Done",
-        // width: 400,
-        icon: "success",
-        padding: "1em",
-        // color: "#abff2ef9",
-        color: "#02e222",
-        color: "#fff",
-        background: " url(../images/4.webp) ",
+        position: position,
+        icon: type,
+        title: message,
         showConfirmButton: false,
         timer: 1500,
+        toast: true
     });
 }
-
-function alertOneTaskNotFinishd() {
-    Swal.fire({
-        position: "top-end",
-        // title: "Your Task has been Done",
-        title: "Not Finished your Task yet !! ",
-        icon: "info",
-        // width: 400,
-        padding: "1em",
-        color: "#fff",
-        background: "#ffffff52 url(../images/4.webp) ",
-        showConfirmButton: false,
-        timer: 1500,
-    });
-}
-
-function allTasksDone() {
-    Swal.fire({
-        position: "top-center",
-        icon: "success",
-        title: "All Tasks has been Done",
-        color: "#fff",
-        background: " url(../images/4.webp) ",
-        showConfirmButton: false,
-        timer: 1500,
-    });
-}
-// end  alerts of task
-
 
 function computedPercent(allTasks, tasksFinshd) {
-    if (allTasks == 1, tasksFinshd == 1) {
+    if (allTasks == 1 && tasksFinshd == 1) {
         progress.style.width = `${0}%`;
 
     }
@@ -196,6 +183,8 @@ function computedPercent(allTasks, tasksFinshd) {
     console.log(percent);
     progress.style.width = `${percent}%`;
 }
+
+
 
 function timesTaskIsCompleted() {
     for (const ok of tasks) {
@@ -210,34 +199,53 @@ function timesTaskIsCompleted() {
 
 }
 
-function addNewTask() {
-    allTasks += 1;
-    alltasksList.innerHTML = allTasks;
-    computedPercent(allTasks, tasksFinshd);
-}
 
-function removeTask(taskId) {
-    allTasks -= 1;
-    alltasksList.innerHTML = allTasks;
 
-    if (tasks[taskId].completed == true) {
-        oneTaskNotCompleted()
-    }
-    computedPercent(allTasks, tasksFinshd)
-}
 
-function oneTaskCompleted() {
-    tasksFinshd += 1;
-    comp.innerHTML = `${tasksFinshd}`;
 
-    computedPercent(allTasks, tasksFinshd);
-}
 
-function oneTaskNotCompleted() {
-    tasksFinshd -= 1;
-    comp.innerHTML = `${tasksFinshd}`;
-    computedPercent(allTasks, tasksFinshd)
-}
+
+
+
+
+
+
+
+
+
+
+
+
+// old code
+
+// function addNewTask() {
+//     allTasks += 1;
+//     alltasksList.innerHTML = allTasks;
+//     computedPercent(allTasks, tasksFinshd);
+// }
+
+// function removeTask(taskId) {
+//     allTasks--;
+//     alltasksList.innerHTML = allTasks;
+
+//     if (tasks[taskId].completed == true) {
+//         oneTaskNotCompleted()
+//     }
+//     computedPercent(allTasks, tasksFinshd)
+// }
+
+// function oneTaskCompleted() {
+//     tasksFinshd += 1;
+//     comp.innerHTML = `${tasksFinshd}`;
+
+//     computedPercent(allTasks, tasksFinshd);
+// }
+
+// function oneTaskNotCompleted() {
+//     tasksFinshd -= 1;
+//     comp.innerHTML = `${tasksFinshd}`;
+//     computedPercent(allTasks, tasksFinshd)
+// }
 
 
 
@@ -318,3 +326,44 @@ function oneTaskNotCompleted() {
 //         </button>
 //     </div>
 // </li>`;
+
+
+
+
+// // start  alerts of task
+// function alertOneTaskDone() {
+//     Swal.fire({
+//         position: 'top-end',
+//         icon: "success",
+//         title: "Your Task has been Done",
+//         showConfirmButton: false,
+//         timer: 1500,
+//         toast: true
+//     });
+// }
+
+// function alertOneTaskNotFinishd() {
+
+
+
+//     Swal.fire({
+//         position: 'top-end',
+//         icon: 'info',
+//         title: 'Not Finished your Task yet !!',
+//         showConfirmButton: false,
+//         timer: 1500,
+//         toast: true
+//     });
+// }
+
+// function allTasksDone() {
+//     Swal.fire({
+//         position: 'top-end',
+//         icon: 'success',
+//         title: 'All tasks have been done',
+//         showConfirmButton: false,
+//         timer: 1500,
+//         toast: true
+//     });
+// }
+// end  alerts of task
